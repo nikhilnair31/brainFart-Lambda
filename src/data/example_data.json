@@ -1,0 +1,38 @@
+[
+    {
+        "inp" : "Game idea",
+        "out" : "I want to play a game where you are in the passenger seat of a car with new friends, and they demand you play the music for the entire trip. You have to keep them all happy with different genres while managing the mind numbing fear that comes with exposing your musical tastes to new friends."
+    },
+    {
+        "inp" : "Game idea",
+        "out" : "A game where you play as the hero’s “guy in the chair”, bringing up information, schematics, coordinates, hack security systems, disable power grids, etc on the fly as your heroic counterpart fights the big bad."
+    },
+    {
+        "inp" : "Game idea",
+        "out" : "You start in the middle of the dungeon. You possess a hero and you want to go deeper down, where enemies get thougher. When you die, you switch roles and want to progress upwards and escape the dungeon. But the heroes become stronger closer to the surface."
+    },
+    {
+        "inp" : "App idea",
+        "out" : "Poop with Me: Simple app to let your friends know when you're laying the eggs. Inspired by the ever popular 'Beer with Me'. You can send templated messages to your friends like: 'Sending moral support' or 'Good job'."
+    },
+    {
+        "inp" : "App idea",
+        "out" : "An app to bet money that you will wake up on time. Winners split the money lost by those that didn't. Can only be used from 9pm to 10am (or something) because otherwise people would just do it when they are awake."
+    },
+    {
+        "inp" : "App idea",
+        "out" : "You can post a recipe, private or public. Public recipes can be forked to create your own variations. Or you can contribute to improve the original recipe, and the recipe owner can pull your changes in it approved. Recipes can be started to elevate better recipes to the top. Tagging and searching to improve recipes discoverability. Basically just a crowdsourced, collaborative, recipe app."
+    },
+    {
+        "inp" : "Startup idea",
+        "out" : "AirBnB for Parties where one can host parties at private residences, function spaces and any other party approved venues including bars, clubs etc. Buy products and specials on offer from the actual events via the app, including alcohol discounts, which would show age validation."
+    },
+    {
+        "inp" : "Startup idea",
+        "out" : "A webapp that determines how easy a site is to scrape where one can post a request for a site they want to scrape to this webapp and get a standardised response of how scrapable the requested site is:"
+    },
+    {
+        "inp" : "Startup idea",
+        "out" : "A platform where people can sell their failed MVPs and entrepreneurs can browse prototypes close to their vision then purchases the MVP"
+    }
+]
