@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import random
@@ -10,13 +11,26 @@ from firebase_admin import credentials, firestore
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-cred = credentials.Certificate('keys/ideahub31-firebase-adminsdk-yl59k-f6da5b2634.json') #change path to 'keys/ideahub' during deploy
+
+gpt3_api_key = os.environ.get("GPT3_API_KEY")
+
+my_credentials = {
+    "type": "service_account",
+    "project_id": "ideahub31",
+    "private_key_id": os.environ.get("PRIVATE_KEY_ID"),
+    "private_key": os.environ.get("PRIVATE_KEY").replace(r'\n', '\n'),
+    "client_email": os.environ.get("CLIENT_EMAIL"),
+    "client_id": os.environ.get("CLIENT_ID"),
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": os.environ.get("AUTH_PROVIDER_X509_CERT_URL"),
+    "client_x509_cert_url": os.environ.get("AUTH_PROVIDER_X509_CERT_URL")
+}
+cred = credentials.Certificate(my_credentials)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-key_path = 'keys/gpt3_keys.json'
 data_path = 'data/example_data.json'
-engine = ["davinci", "curie", "babbage", "ada"]
 tags = ["games", "apps", "startup"]
 prompt = ["Game idea", "App idea", "Startup idea"]
 min_max = [(0, 3), (3, 6), (6, 9)]
@@ -43,15 +57,13 @@ def firebasepush():
 def handler(event, context): 
     try:
         logger.info(f'started handler\n\n')
-        with open(key_path) as f:
-            data = json.load(f)
-        openai.api_key = data["api_key"]
 
-        gpt = GPT(engine=engine[event["engine_index"]], temperature=event["temp"], max_tokens=event["max_tok"])
+        openai.api_key = gpt3_api_key
+
+        gpt = GPT(engine=event["engine_name"], temperature=event["temp"], max_tokens=event["max_tok"])
 
         with open(data_path) as f:
             prompt_data = json.load(f)
-        #print(prompt_data[:5])
 
         for item in prompt_data[min_max[prompt_index][0]:min_max[prompt_index][1]]: #change slice depending on prompt
             gpt.add_example(Example(item["inp"], item["out"]))
@@ -65,7 +77,6 @@ def handler(event, context):
             new_string_list = split_string
         updated_output_text = ' '.join(new_string_list) 
         logger.info(f'updated_output_text: {updated_output_text}\n\n')
-        #print(updated_output_text)
 
         db.collection('posts').add({
             'displayName': 'GPT3-Bot', 
@@ -85,6 +96,3 @@ def handler(event, context):
             'statusCode': 400,
             'body': 'f max'
         }
- 
-if __name__ == "__main__":
-    handler({"engine_index": 0, "temp": 0.8, "max_tok": 128}, None)
