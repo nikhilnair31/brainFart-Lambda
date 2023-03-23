@@ -4,8 +4,6 @@ import time
 import random
 import logging
 import openai
-from gpt import GPT
-from gpt import Example
 import firebase_admin
 from firebase_admin import credentials, firestore
 
@@ -58,28 +56,27 @@ def handler(event, context):
     try:
         logger.info(f'started handler\n\n')
 
-        openai.api_key = gpt3_api_key
-
-        gpt = GPT(engine=event["engine_name"], temperature=event["temp"], max_tokens=event["max_tok"])
-
         with open(data_path) as f:
             prompt_data = json.load(f)
+        openai.api_key = gpt3_api_key
 
-        for item in prompt_data[min_max[prompt_index][0]:min_max[prompt_index][1]]: #change slice depending on prompt
-            gpt.add_example(Example(item["inp"], item["out"]))
-
-        output = gpt.submit_request(prompt[prompt_index])
-        logger.info(f'output.choices[0].text: {output.choices[0].text}\n\n')
-        split_string = output.choices[0].text.split(' ')  
-        if split_string[0] == 'output:':
-            new_string_list = split_string[1:] 
-        else:
-            new_string_list = split_string
-        updated_output_text = ' '.join(new_string_list) 
+        messages=[
+            {
+                "role": "system", 
+                "content": prompt_data[prompt_index]["system"]
+            }
+        ]
+        response = openai.ChatCompletion.create(
+            model=event["engine_name"],
+            max_tokens=event["max_tok"],
+            temperature=event["temp"],
+            messages = messages
+        )
+        updated_output_text = response["choices"][0]["message"]["content"]
         logger.info(f'updated_output_text: {updated_output_text}\n\n')
 
         db.collection('posts').add({
-            'displayName': 'GPT3-Bot', 
+            'displayName': 'GPT4-Bot', 
             'uid': '5aCGwn68JWUpOv3QSwduabVqqG62', #d7c3d2e59b835bf1ad098ceb7e5d2123 for gpt3 and 5aCGwn68JWUpOv3QSwduabVqqG62 for sil
             'idea': updated_output_text, 
             'tag': tags[prompt_index], 
