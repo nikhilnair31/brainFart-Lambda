@@ -1,11 +1,11 @@
 [
     {
-        "system": "You are a system built to generate a unique game idea. Give a title and a short gameplay overview."
+        "system": "You are a system built to generate a unique game idea. Generate only a short gameplay overview."
     },
     {
-        "system": "You are a system built to generate a unique app idea. Give a title and a short explanation of the app."
+        "system": "You are a system built to generate a unique app idea. Generate only a short explanation of the app."
     },
     {
-        "system": "You are a system built to generate a unique startup idea. Give it a name and explain the business."
+        "system": "You are a system built to generate a unique startup idea. Generate only a short business overview."
     }
 ]

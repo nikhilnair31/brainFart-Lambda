@@ -1,7 +1,7 @@
 # brainFart
 ## General
 * Secrets and keys stored as environment variables 
-* `prompted_gpt3.py` runs first.
+* `gpt_idea_generator.py` runs first.
 
 ## Run the following to Deploy
 * Login first with 

@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 COPY src/ .
 
 # Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
-CMD [ "prompted_gpt3.handler" ]
+CMD [ "gpt_idea_generator.handler" ]

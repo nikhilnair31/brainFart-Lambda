@@ -10,7 +10,10 @@ from firebase_admin import credentials, firestore
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-gpt3_api_key = os.environ.get("GPT3_API_KEY")
+gpt_api_key = os.environ.get("GPT_API_KEY")
+gpt_model = os.environ.get("GPT_MODEL")
+gpt_temp = float(os.environ.get("GPT_TEMP"))
+gpt_maxtokens = int(os.environ.get("GPT_MAXTOKENS"))
 
 my_credentials = {
     "type": "service_account",
@@ -27,6 +30,7 @@ my_credentials = {
 cred = credentials.Certificate(my_credentials)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
+openai.api_key = gpt_api_key
 
 data_path = 'data/example_data.json'
 tags = ["games", "apps", "startup"]
@@ -58,18 +62,15 @@ def handler(event, context):
 
         with open(data_path) as f:
             prompt_data = json.load(f)
-        openai.api_key = gpt3_api_key
 
-        messages=[
-            {
-                "role": "system", 
-                "content": prompt_data[prompt_index]["system"]
-            }
-        ]
+        messages=[{
+            "role": "system", 
+            "content": prompt_data[prompt_index]["system"]
+        }]
         response = openai.ChatCompletion.create(
-            model=event["engine_name"],
-            max_tokens=event["max_tok"],
-            temperature=event["temp"],
+            model=gpt_model,
+            max_tokens=gpt_maxtokens,
+            temperature=gpt_temp,
             messages = messages
         )
         updated_output_text = response["choices"][0]["message"]["content"]
